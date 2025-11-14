@@ -1,0 +1,171 @@
+{
+"agent_name": "whatsapp_web_ops",
+"goal": "Navigate WhatsApp Web to find customers and broadcast promotions using clicks hovers scrolls and typing",
+"pre_checks": [
+"Confirm WhatsApp Web is loaded and left toolbar is visible",
+"Handle any reconnect banner by clicking reload or relink",
+"Ensure viewport height is maximized"
+],
+"ui_map": {
+"left_toolbar": {
+"order_top_to_bottom": [
+{"id": "messages", "tooltip": "Messages", "action": "open_chat_list", "scrollable": false},
+{"id": "status", "tooltip": "Status", "action": "open_status_panel", "scrollable": false},
+{"id": "channels", "tooltip": "Channels", "action": "open_channels", "scrollable": false},
+{"id": "communities_1", "tooltip": "Communities", "action": "open_communities", "scrollable": false},
+{"id": "communities_2", "tooltip": "Communities", "action": "open_communities", "scrollable": false},
+{"id": "business_tools", "tooltip": "Business tools", "action": "open_business_tools", "scrollable": false},
+{"id": "advertise_on_facebook", "tooltip": "Advertise on Facebook", "action": "open_ads_flow", "scrollable": false}
+],
+"bottom_section": [
+{"id": "settings", "tooltip": "Settings", "action": "open_settings", "scrollable": false},
+{"id": "avatar", "tooltip": "Profile", "action": "open_profile_card", "scrollable": false}
+],
+"scrollable": false
+},
+"middle_column": {
+"header": {
+"search_field": {"id": "search", "action": "focus_and_type", "scrollable": false},
+"filter_chips": [
+{"id": "chip_all", "label": "All"},
+{"id": "chip_unread", "label": "Unread"},
+{"id": "chip_favourites", "label": "Favourites"},
+{"id": "chip_groups", "label": "Groups"}
+],
+"scrollable": false
+},
+"content": {
+"promo_banner": {"id": "background_sync_banner", "action": "dismiss", "scrollable": true},
+"archived_row": {"id": "archived_entry", "action": "open_archived", "scrollable": true},
+"chat_list": {
+"row_fields": ["avatar", "title", "snippet", "timestamp", "unread_badge", "state_icons"],
+"state_icons": ["muted", "pinned", "reaction", "sent_check", "delivered_checks", "read_checks"],
+"scrollable": true
+}
+},
+"scrollable": true
+},
+"right_canvas": {
+"welcome_panel": {"id": "welcome", "interactive": false, "scrollable": false},
+"thread_view": {"id": "message_history", "interactive": true, "scrollable": true},
+"composer": {
+"id": "composer",
+"parts": ["attachment", "emoji", "text_input", "mic_or_send"],
+"scrollable": false,
+"fixed_to_bottom": true
+}
+}
+},
+"general_rules": [
+"Prefer elements that show a tooltip to confirm identity",
+"Never scroll the left toolbar",
+"Use middle column for discovery scrolling",
+"Scroll thread view only after a chat is open",
+"Use ctrl k to focus search or click the search field"
+],
+"actions": {
+"open_chat_list": [
+"click left_toolbar.messages",
+"wait for middle_column.chat_list to render"
+],
+"search_chats": [
+"click middle_column.header.search_field",
+"type query",
+"press enter or wait for live filter"
+],
+"filter_chats": [
+"click desired filter chip",
+"wait for list refresh"
+],
+"scroll_chat_list": [
+"scroll middle_column.content.chat_list by one viewport",
+"repeat until target appears or end reached"
+],
+"open_chat_row": [
+"click target chat row",
+"wait for right_canvas.thread_view to appear"
+],
+"scroll_thread": [
+"scroll right_canvas.thread_view upward to load history as needed"
+],
+"open_business_tools": [
+"click left_toolbar.business_tools"
+],
+"open_settings": [
+"click left_toolbar.bottom_section.settings"
+],
+"open_profile_card": [
+"click left_toolbar.bottom_section.avatar"
+],
+"return_to_messages": [
+"click left_toolbar.messages"
+],
+"dismiss_banner": [
+"if promo banner is visible click its close control"
+]
+},
+"routines": {
+"open_chat_by_exact_name": [
+"click middle_column.header.search_field",
+"type exact display name",
+"wait for filtered results",
+"click first matching row",
+"verify header name matches"
+],
+"sweep_unread_top_to_bottom": [
+"click chip_unread",
+"for each visible row do open_chat_row perform required reply return_to_messages",
+"when viewport exhausted scroll_chat_list and continue until none left"
+],
+"deep_scroll_all_chats": [
+"ensure chip_all is selected",
+"loop until bottom reached record last visible title scroll_chat_list if title repeats wait then scroll again"
+],
+"broadcast_to_segment_manual": [
+"click left_toolbar.messages",
+"click chip_all or chip_groups as required",
+"use search to filter by tag prefix in names if applicable",
+"open first chat in segment",
+"paste prepared template",
+"send",
+"return_to_messages",
+"repeat for next chat",
+"every ten sends pause briefly to avoid rate limits"
+],
+"open_business_shortcuts": [
+"click left_toolbar.business_tools",
+"use catalog labels quick_replies away_message as needed",
+"return_to_messages"
+]
+},
+"hover_confirms": [
+"messages tooltip shows Messages",
+"status tooltip shows Status",
+"channels tooltip shows Channels",
+"communities tooltip shows Communities",
+"business tools tooltip shows Business tools",
+"advertise tooltip shows Advertise on Facebook",
+"settings tooltip shows Settings",
+"avatar tooltip shows Profile"
+],
+"scroll_rules": [
+"middle column chat list is scrollable",
+"right canvas thread is scrollable when open",
+"left toolbar never scrolls",
+"composer is fixed"
+],
+"reliability_moves": [
+"if click has no effect repeat once after a short wait",
+"if tooltip does not appear re hover",
+"if list lazy load stalls pause then scroll again",
+"if welcome panel is visible you are not in a thread select a chat"
+],
+"safe_exit": [
+"to leave any secondary panel click messages",
+"to clear search press escape inside the search field"
+],
+"telemetry_checks": [
+"after each navigation confirm expected region is visible",
+"log last action last target and current scroll position of middle column and thread view"
+]
+}
