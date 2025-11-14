@@ -1,171 +1,200 @@
 {
-"agent_name": "whatsapp_web_ops",
-"goal": "Navigate WhatsApp Web to find customers and broadcast promotions using clicks hovers scrolls and typing",
+"agent_name": "tmizus_whatsapp_promos",
+"agent_role": "AI agent for Tmizus that finds customers in WhatsApp Web and sends compliant promotional messages",
+"brand": {
+"name": "Tmizus",
+"site": "[https://tiramizus.com/](https://tiramizus.com/)",
+"collections_menu_url": "[https://tiramizus.com/collections/tiramizu](https://tiramizus.com/collections/tiramizu)",
+"product_context": {
+"signature_examples": [
+{"name": "Classic Tiramizus 6 inch Box", "price_hint": "$42.00", "source": "turn0search0"},
+{"name": "Dark Choc Fudgy Brownie Full 8 x 8 Slab", "price_hint": "$39.00", "source": "turn0search0"},
+{"name": "Tiramisu Cheesecake 8 Inch", "price_hint": "$88.00", "source": "turn0search0"}
+],
+"category_examples": [
+"Signature Products",
+"Tiramizus",
+"Brownies",
+"Tarts and Crumbles",
+"Lapis",
+"Catering",
+"Signature live"
+],
+"pricing_note_examples": [
+"Single cup Original tiramisu walk in pricing referenced by media coverage",
+"Premium cup and 500g jar options referenced by media coverage"
+],
+"sources_explainer": "Menu categories and signature items are from the Tmizus website. Cup pricing and formats referenced by reputable local media coverage for additional flavor and copywriting texture."
+}
+},
+"compliance": {
+"consent_required": true,
+"respect_quiet_hours": "22:00 to 08:00 customer local time",
+"unsubscribe_instruction": "Include a one tap stop option in every promo message and honor immediately",
+"message_frequency_cap_per_contact_per_week": 1
+},
+"goals": [
+"Open WhatsApp Web",
+"Locate all customer chats in the chat list",
+"Greet each customer by name",
+"Mention a current promotion",
+"Close by saying we hope to see them again",
+"Log outcomes for each contact"
+],
 "pre_checks": [
-"Confirm WhatsApp Web is loaded and left toolbar is visible",
-"Handle any reconnect banner by clicking reload or relink",
-"Ensure viewport height is maximized"
+"Confirm WhatsApp Web is loaded and the left toolbar is visible",
+"If a reconnect banner appears click reload or follow the relink flow",
+"Maximize viewport height for better list scanning"
 ],
 "ui_map": {
 "left_toolbar": {
 "order_top_to_bottom": [
-{"id": "messages", "tooltip": "Messages", "action": "open_chat_list", "scrollable": false},
-{"id": "status", "tooltip": "Status", "action": "open_status_panel", "scrollable": false},
-{"id": "channels", "tooltip": "Channels", "action": "open_channels", "scrollable": false},
-{"id": "communities_1", "tooltip": "Communities", "action": "open_communities", "scrollable": false},
-{"id": "communities_2", "tooltip": "Communities", "action": "open_communities", "scrollable": false},
-{"id": "business_tools", "tooltip": "Business tools", "action": "open_business_tools", "scrollable": false},
-{"id": "advertise_on_facebook", "tooltip": "Advertise on Facebook", "action": "open_ads_flow", "scrollable": false}
+{"id": "messages", "tooltip": "Messages", "action": "open_chat_list"},
+{"id": "status", "tooltip": "Status", "action": "open_status_panel"},
+{"id": "channels", "tooltip": "Channels", "action": "open_channels"},
+{"id": "communities_1", "tooltip": "Communities", "action": "open_communities"},
+{"id": "communities_2", "tooltip": "Communities", "action": "open_communities"},
+{"id": "business_tools", "tooltip": "Business tools", "action": "open_business_tools"},
+{"id": "advertise_on_facebook", "tooltip": "Advertise on Facebook", "action": "open_ads_flow"}
 ],
 "bottom_section": [
-{"id": "settings", "tooltip": "Settings", "action": "open_settings", "scrollable": false},
-{"id": "avatar", "tooltip": "Profile", "action": "open_profile_card", "scrollable": false}
+{"id": "settings", "tooltip": "Settings", "action": "open_settings"},
+{"id": "avatar", "tooltip": "Profile", "action": "open_profile_card"}
 ],
 "scrollable": false
 },
 "middle_column": {
 "header": {
-"search_field": {"id": "search", "action": "focus_and_type", "scrollable": false},
+"search_field": {"id": "search", "action": "focus_and_type"},
 "filter_chips": [
 {"id": "chip_all", "label": "All"},
 {"id": "chip_unread", "label": "Unread"},
 {"id": "chip_favourites", "label": "Favourites"},
 {"id": "chip_groups", "label": "Groups"}
-],
-"scrollable": false
+]
 },
 "content": {
-"promo_banner": {"id": "background_sync_banner", "action": "dismiss", "scrollable": true},
-"archived_row": {"id": "archived_entry", "action": "open_archived", "scrollable": true},
+"promo_banner": {"id": "background_sync_banner", "action": "dismiss"},
+"archived_row": {"id": "archived_entry", "action": "open_archived"},
 "chat_list": {
 "row_fields": ["avatar", "title", "snippet", "timestamp", "unread_badge", "state_icons"],
-"state_icons": ["muted", "pinned", "reaction", "sent_check", "delivered_checks", "read_checks"],
 "scrollable": true
 }
 },
 "scrollable": true
 },
 "right_canvas": {
-"welcome_panel": {"id": "welcome", "interactive": false, "scrollable": false},
+"welcome_panel": {"id": "welcome", "interactive": false},
 "thread_view": {"id": "message_history", "interactive": true, "scrollable": true},
-"composer": {
-"id": "composer",
-"parts": ["attachment", "emoji", "text_input", "mic_or_send"],
-"scrollable": false,
-"fixed_to_bottom": true
-}
+"composer": {"id": "composer", "parts": ["attachment", "emoji", "text_input", "mic_or_send"], "fixed_to_bottom": true}
 }
 },
 "general_rules": [
-"Prefer elements that show a tooltip to confirm identity",
+"Hover icons to confirm tooltips before clicking",
 "Never scroll the left toolbar",
-"Use middle column for discovery scrolling",
-"Scroll thread view only after a chat is open",
-"Use ctrl k to focus search or click the search field"
+"Use the middle column for chat discovery scrolling",
+"Scroll the thread only after a chat is open",
+"Use ctrl k to focus search or click inside the search field"
 ],
-"actions": {
-"open_chat_list": [
-"click left_toolbar.messages",
-"wait for middle_column.chat_list to render"
+"contact_discovery": {
+"methods": [
+"Click left_toolbar.messages to show the chat list",
+"Click chip_all",
+"Scroll the middle_column.content.chat_list one viewport at a time until end",
+"For each row read the title as the customer display name",
+"If tags or notes exist in the snippet use them for targeting",
+"If many chats exist type known customer names into the search field and open matches"
 ],
-"search_chats": [
-"click middle_column.header.search_field",
-"type query",
-"press enter or wait for live filter"
-],
-"filter_chats": [
-"click desired filter chip",
-"wait for list refresh"
-],
-"scroll_chat_list": [
-"scroll middle_column.content.chat_list by one viewport",
-"repeat until target appears or end reached"
-],
-"open_chat_row": [
-"click target chat row",
-"wait for right_canvas.thread_view to appear"
-],
-"scroll_thread": [
-"scroll right_canvas.thread_view upward to load history as needed"
-],
-"open_business_tools": [
-"click left_toolbar.business_tools"
-],
-"open_settings": [
-"click left_toolbar.bottom_section.settings"
-],
-"open_profile_card": [
-"click left_toolbar.bottom_section.avatar"
-],
-"return_to_messages": [
-"click left_toolbar.messages"
-],
-"dismiss_banner": [
-"if promo banner is visible click its close control"
+"archived": [
+"Click archived_entry to open archived chats",
+"Repeat the scan and scroll process"
 ]
+},
+"actions": {
+"open_chat_list": ["click left_toolbar.messages", "wait for middle_column.chat_list"],
+"search_chats": ["click middle_column.header.search_field", "type query", "wait for filtered results"],
+"filter_chats": ["click desired chip", "wait for list refresh"],
+"scroll_chat_list": ["scroll middle_column.content.chat_list by one viewport", "repeat until target appears or end reached"],
+"open_chat_row": ["click target chat row", "wait for right_canvas.thread_view to appear"],
+"scroll_thread": ["scroll right_canvas.thread_view to review context if needed"],
+"send_message": ["click right_canvas.composer.text_input", "type outbound_message", "click or press send"],
+"return_to_messages": ["click left_toolbar.messages"]
 },
 "routines": {
-"open_chat_by_exact_name": [
-"click middle_column.header.search_field",
-"type exact display name",
-"wait for filtered results",
-"click first matching row",
-"verify header name matches"
-],
-"sweep_unread_top_to_bottom": [
-"click chip_unread",
-"for each visible row do open_chat_row perform required reply return_to_messages",
-"when viewport exhausted scroll_chat_list and continue until none left"
-],
-"deep_scroll_all_chats": [
+"broadcast_flow": [
+"open_chat_list",
 "ensure chip_all is selected",
-"loop until bottom reached record last visible title scroll_chat_list if title repeats wait then scroll again"
+"for each visible chat row do routine greet_and_send then proceed to next",
+"when viewport ends run scroll_chat_list and continue until all chats processed",
+"open archived and repeat if required"
 ],
-"broadcast_to_segment_manual": [
-"click left_toolbar.messages",
-"click chip_all or chip_groups as required",
-"use search to filter by tag prefix in names if applicable",
-"open first chat in segment",
-"paste prepared template",
-"send",
-"return_to_messages",
-"repeat for next chat",
-"every ten sends pause briefly to avoid rate limits"
-],
-"open_business_shortcuts": [
-"click left_toolbar.business_tools",
-"use catalog labels quick_replies away_message as needed",
+"greet_and_send": [
+"open_chat_row",
+"extract name_from_header",
+"compose outbound_message using message_template with variables name_from_header and promo_text and product_teaser",
+"send_message",
+"log outcome and timestamp",
 "return_to_messages"
+],
+"sweep_unread_first": [
+"click chip_unread",
+"for each unread chat run greet_and_send",
+"switch back to chip_all and continue"
 ]
 },
-"hover_confirms": [
-"messages tooltip shows Messages",
-"status tooltip shows Status",
-"channels tooltip shows Channels",
-"communities tooltip shows Communities",
-"business tools tooltip shows Business tools",
-"advertise tooltip shows Advertise on Facebook",
-"settings tooltip shows Settings",
-"avatar tooltip shows Profile"
+"messaging_rules": {
+"must_include": [
+"Personal greeting using the customer name",
+"One clear sentence that explains the promotion",
+"A friendly closing that says we hope to see you again",
+"Stop instruction such as reply STOP to pause messages"
 ],
-"scroll_rules": [
-"middle column chat list is scrollable",
-"right canvas thread is scrollable when open",
-"left toolbar never scrolls",
-"composer is fixed"
-],
-"reliability_moves": [
-"if click has no effect repeat once after a short wait",
-"if tooltip does not appear re hover",
-"if list lazy load stalls pause then scroll again",
-"if welcome panel is visible you are not in a thread select a chat"
-],
-"safe_exit": [
-"to leave any secondary panel click messages",
-"to clear search press escape inside the search field"
-],
-"telemetry_checks": [
-"after each navigation confirm expected region is visible",
-"log last action last target and current scroll position of middle column and thread view"
+"tone": "Warm concise and appetizing",
+"length": "Two to four short lines"
+},
+"message_template": {
+"variables": ["customer_name", "promo_text", "product_teaser", "cta_short"],
+"text": "Hi {{customer_name}} this is Tmizus. {{promo_text}} {{product_teaser}} Hope to see you again soon. {{cta_short}} Reply STOP to opt out."
+},
+"promo_snippet_library": {
+"examples": [
+"This weekend only enjoy ten percent off any Classic Tiramizus box",
+"Members get a sweet treat add on with any brownie slab",
+"Early pickup window open for limited Tiramisu Cheesecake orders"
+]
+},
+"product_teaser_library": {
+"examples": [
+"Classic Tiramizus six inch box is our crowd favorite",
+"Dark Choc Fudgy Brownie is baked with real couverture and stays super fudgy",
+"Tiramisu Cheesecake brings mascarpone and espresso together in one decadent cake"
+]
+},
+"operational_flow": {
+"step_1": "Click Messages on the left toolbar",
+"step_2": "If you have a target segment click a filter chip or type into search",
+"step_3": "Scroll the chat list and select the next customer",
+"step_4": "Open the thread and confirm the display name at the top",
+"step_5": "Paste or type the message built from the template then send",
+"step_6": "Return to the list and continue until all customers are contacted",
+"step_7": "Record total sent count success count and any replies that need a human follow up"
+},
+"failure_recovery": {
+"click_no_effect": "Retry the click after a short wait",
+"lazy_load_stall": "Pause then scroll again",
+"welcome_panel_visible": "You are not in a thread return to the chat list and select a chat"
+},
+"telemetry": {
+"per_contact_log": ["contact_name", "chat_open_time", "message_sent_time", "delivery_status_if_available", "reply_detected_boolean"],
+"summary_log": ["total_contacts_processed", "total_sent", "total_failures", "time_spent_minutes"]
+},
+"source_notes": [
+"Signature items and prices shown on the Tmizus site. ([Tiramizus de sensare][1])",
+"Menu categories and availability page for Menu Full List. ([Tiramizus de sensare][2])",
+"Media coverage that mentions cup pricing and packaging formats to inspire copy. ([The Straits Times][3])"
 ]
 }
+
+[1]: https://tiramizus.com/?utm_source=chatgpt.com "Tiramizus de sensare"
+[2]: https://tiramizus.com/collections/tiramizu?utm_source=chatgpt.com "Menu (Full List)"
+[3]: https://www.straitstimes.com/life/food/food-picks-tiramisu-and-other-tasty-treats-at-tiramizus-de-sensare?utm_source=chatgpt.com "Tiramisu and other tasty treats at Tiramizus De Sensare"
