@@ -1,0 +1,38 @@
+{
+  "name": "Web Wizards AI Agent",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "description": "Loading prompts, custom data structures to chatgpt",
+  "icons": {
+    "16": "apple.png",
+    "32": "apple.png",
+    "48": "apple.png",
+    "128": "apple.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "apple.png",
+      "32": "apple.png",
+      "48": "apple.png",
+      "128": "apple.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*"
+      ],
+      "js": [
+        "content-script.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/*"
+  ]
+}
+
+
