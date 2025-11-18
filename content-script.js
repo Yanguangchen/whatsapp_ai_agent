@@ -93,12 +93,18 @@
       const existing = document.getElementById(HEADER_BANNER_ID);
       if (existing) {
         existing.style.fontSize = HEADER_BANNER_FONT_SIZE;
+        existing.style.textAlign = "center";
+        existing.style.paddingTop = "8px";
+        existing.style.paddingBottom = "8px";
         return;
       }
       const h1 = document.createElement("h1");
       h1.id = HEADER_BANNER_ID;
       h1.textContent = HEADER_BANNER_TEXT;
       h1.style.fontSize = HEADER_BANNER_FONT_SIZE;
+      h1.style.textAlign = "center";
+      h1.style.paddingTop = "8px";
+      h1.style.paddingBottom = "8px";
       document.body.prepend(h1);
     } catch {
       // Ignore errors to avoid breaking the page.
